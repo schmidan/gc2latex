@@ -1,0 +1,4 @@
+debian/files
+debian/gc2latex.debhelper.log
+debian/gc2latex.substvars
+debian/gc2latex/
