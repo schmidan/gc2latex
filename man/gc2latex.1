@@ -1,0 +1,27 @@
+.\" Manpage for gc2latex.
+.\" Contact benedikt.trefzer@cirrax.com to correct errors or typos.
+.TH man 1 "27 Apr 2013" "1.0" "gc2latex man page"
+.SH NAME
+gc2latex \- create an invoice from gnucash in LaTeX
+.SH SYNOPSIS
+gc2latex [template file] [account file] [invoice id]
+.SH DESCRIPTION
+Convert gnucash invoices to pretty LaTeX documents
+gc2latex provides perl modules to retrieve invoice data
+from a gnucash XML file and insert into a LaTeX template.
+.SH OPTIONS
+.TP
+[template file]
+The LaTeX template to use for the output. See examples how to use.
+.TP
+[account file]
+The gnucash file where the invoice was saved. Only gzipped gnucash files
+are supported. 
+.TP
+[invoice id]
+The invoice id to print.
+.SH BUGS
+If you find them, please let me know.
+.SH AUTHOR
+gc2latex was written by Stefan Tomanek <stefan@pico.ruhr.de>
+
