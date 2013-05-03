@@ -78,4 +78,25 @@ sub getAddress($) {
     return $text;
 }
 
+sub getAddressShort($) {
+    # = Name and first Adress line and last available adress line
+    my $text = "";
+    $text .= getName($_[0])."\n";
+    if (getAddr1($_[0])) {
+      $text .= getAddr1($_[0])."\n";
+    };
+    if (getAddr4($_[0])) {
+      $text .= getAddr4($_[0])."\n";
+    } else {
+      if (getAddr3($_[0])) {
+        $text .= getAddr3($_[0])."\n";
+      } else {
+        if (getAddr2($_[0])) {
+          $text .= getAddr2($_[0])."\n";
+        }
+      }
+    }
+    return $text;
+}
+
 1;
