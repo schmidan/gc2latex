@@ -1,0 +1,36 @@
+gc2latex (0.2.1.trb1~bpo60+2~cirrax2) unstable; urgency=low
+
+  * Add README.Debian with hint about LaTeX:Encode and german umlauts
+  * add customershort variable
+  * use all 4 address fields
+
+ -- Benedikt Trefzer <benedikt.trefzer@cirrax.com>  Fri, 03 May 2013 10:27:23 +0200
+
+gc2latex (0.2.1.trb1~bpo60+1~cirrax1) unstable; urgency=low
+
+  * add parameters for invoice lines into latex document (distict code from layout)
+  * removed LaTeX table from code
+  * Add caclulation of discounts 
+  * support for compressed gnucash files
+  * several new replacement posibilities
+  * add man page
+
+ -- Benedikt Trefzer <benedikt.trefzer@cirrax.com>  Sat, 27 Apr 2013 22:27:23 +0200
+
+gc2latex (0.2.1-2) unstable; urgency=low
+
+  * fixed paper bag worthy typo when using LaTeX::Encode
+
+ -- Stefan Tomanek <stefan@pico.ruhr.de>  Sat, 17 Oct 2009 22:27:23 +0200
+
+gc2latex (0.2.1-1) unstable; urgency=low
+
+  * optionally use LaTeX::Encode to quote special characters
+
+ -- Stefan Tomanek <stefan@pico.ruhr.de>  Sat, 17 Oct 2009 22:09:20 +0200
+
+gc2latex (0.1.0-1) unstable; urgency=low
+
+  * Initial release
+
+ -- Stefan Tomanek <stefan@pico.ruhr.de>  Tue, 13 Oct 2009 12:49:01 +0200
