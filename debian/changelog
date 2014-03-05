@@ -1,3 +1,14 @@
+gc2latex (0.2.1.trb1~bpo70+2~cirrax2) unstable; urgency=low
+
+  * build for wheezy
+  * merge with susi-wunsch branch
+     - More robust for empty strings in case of LaTeX::Encode usage
+     - Billing terms added
+     - Distinction for Credit-Notes added, works since GnuCash 2.6
+  * change shebang to #!/usr/bin/env perl
+
+ -- Benedikt Trefzer <benedikt.trefzer@cirrax.com>  Fri, 05 Mar 2014 23:27:23 +0200
+
 gc2latex (0.2.1.trb1~bpo60+2~cirrax2) unstable; urgency=low
 
   * Add README.Debian with hint about LaTeX:Encode and german umlauts
