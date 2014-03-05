@@ -1,7 +1,4 @@
-#!/opt/local/bin/perl
-# use the following line as default, the above line had to be
-# changed for Mac OSX perl installed with MacPorts/CPAN
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 # gc2latex by Stefan Tomanek <stefan@pico.ruhr.de>
 
