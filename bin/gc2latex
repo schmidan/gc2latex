@@ -1,3 +1,6 @@
+#!/opt/local/bin/perl
+# use the following line as default, the above line had to be
+# changed for Mac OSX perl installed with MacPorts/CPAN
 #!/usr/bin/perl
 
 # gc2latex by Stefan Tomanek <stefan@pico.ruhr.de>
@@ -31,9 +34,16 @@ sub main($$$) {
     replace($template, $invoice);
 }
 
+sub translateNewlines($) {
+    my ($value) = @_;
+    $value =~ s/\n/\\\\/g;
+    return $value;
+}
+
 # LaTeX encode: use LaTeX::Encode if available
 sub l_enc ($) {
     my ($data) = @_;
+    return "" unless $data;
     my $result = $data;
     eval {
         # try to load LaTeX::Encode and encode the supplied data
@@ -42,6 +52,7 @@ sub l_enc ($) {
         require LaTeX::Encode;
         $result = LaTeX::Encode::latex_encode( $data, {iquotes=>1} );
     };
+    $result = translateNewlines( $result );
     return $result;
 }
 
@@ -92,10 +103,11 @@ sub replace($$) {
     my $id = $invoice->getID();
     my $postingdate = l_enc( time2str("%e.%L.%Y", $invoice->getPostingDate()) );
     my $address = l_enc( $invoice->getCustomer()->getAddress() );
-    $address =~ s/\n/\\\\/g;
     my $addressshort = l_enc( $invoice->getCustomer()->getAddressShort() );
     $addressshort =~ s/\n/\\\\/g;
-    my $notes = $invoice->getNotes();
+    my $notes = l_enc($invoice->getNotes());
+    my $terms = l_enc($invoice->getTerms());
+    my $creditNoteType = $invoice->getCreditNoteType();
     my $currency = $invoice->getCurrency();
     my $total = sprintf("%0.2f", $invoice->getNetSum()+$invoice->getTaxes());
     my $subtotal = sprintf("%0.2f", $invoice->getNetSum());
@@ -113,10 +125,12 @@ sub replace($$) {
         $l =~ s/__GNUCASH-CUSTOMER__/$address/g;
         $l =~ s/__GNUCASH-CUSTOMERSHORT__/$addressshort/g;
         $l =~ s/__GNUCASH-INVOICE-NOTES__/$notes/g;
+	$l =~ s/__GNUCASH-BILLING-TERMS__/$terms/g;
         $l =~ s/__GNUCASH-CURRENCY__/$currency/g;
         $l =~ s/__GNUCASH-TOTAL__/$total/g;
         $l =~ s/__GNUCASH-SUBTOTAL__/$subtotal/g;
         $l =~ s/__GNUCASH-TAXES__/$taxes/g;
+        $l =~ s/__GNUCASH-CREDIT-NOTE-TYPE__/$creditNoteType/g;
 
         # invoice items (multiple lines)
         $l =~ s/__GNUCASH-MACROS__/$macros/;
