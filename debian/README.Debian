@@ -1,9 +1,0 @@
-
-Readme for gc2latex:
---------------------
-
-If you like to use LaTeX::Encode with german umlauts (äöü), you need 
-at least version 0.06 of LaTeX::Encode (Bug: https://rt.cpan.org/Public/Bug/Display.html?id=49357).
-
-In Debian wheezy, only version 0.03 is available.
-Either install LaTex::Encode from sid, install manually.
