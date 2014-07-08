@@ -109,7 +109,7 @@ sub replace($$) {
     my $total = sprintf("%0.2f", $invoice->getNetSum()+$invoice->getTaxes());
     my $subtotal = sprintf("%0.2f", $invoice->getNetSum());
     my $taxes = sprintf("%0.2f", $invoice->getTaxes());
-
+    my $jobName = l_enc($invoice->getJobName());
     # invoice items (mutliple lines)
     my $parameters = createLaTexParams($invoice);
     my $macros = createLaTexMacros();
@@ -122,6 +122,7 @@ sub replace($$) {
         $l =~ s/__GNUCASH-CUSTOMER__/$address/g;
         $l =~ s/__GNUCASH-CUSTOMERSHORT__/$addressshort/g;
         $l =~ s/__GNUCASH-INVOICE-NOTES__/$notes/g;
+        $l =~ s/__GNUCASH-JOB-NAME__/$jobName/g;
 	$l =~ s/__GNUCASH-BILLING-TERMS__/$terms/g;
         $l =~ s/__GNUCASH-CURRENCY__/$currency/g;
         $l =~ s/__GNUCASH-TOTAL__/$total/g;

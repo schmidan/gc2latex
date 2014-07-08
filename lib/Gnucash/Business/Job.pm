@@ -25,8 +25,9 @@ sub fillInfos($) {
     foreach my $job ( $gc->children("gnc:GncJob") ) {
 	next unless ($job->child("job:guid")->value() eq $self->{guid});
 	my $customerId = $job->child("job:owner")->child("owner:id")->value();
-
+    my $jobName = $job->child("job:name")->value();
 	$self->{info}{customer} = new Customer($xml, $customerId);
+    $self->{info}{jobName} = $jobName;
 	last;
     }
 }
@@ -34,6 +35,11 @@ sub fillInfos($) {
 sub getCustomer($) {
     my ($self) = @_;
     return $self->{info}{customer};
+}
+
+sub getJobName($) {
+    my ($self) = @_;
+    return $self->{info}{jobName};
 }
 
 1;

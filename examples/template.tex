@@ -8,27 +8,91 @@
 % enhanced for appropriate titles (invoice vs. credit-note), works
 % since GnuCash 2.6 by Susanne Wunsch <Susanne.Wunsch@gleisBezug.de>
 
-\documentclass[DIN, pagenumber=false, parskip=half,% 
-               fromalign=left, fromphone=true,%  
-               fromemail=true, fromurl=false, %
-               fromlogo=true, fromrule=false]{scrlttr2}
+\documentclass[a4paper, 12pt]{scrlttr2}
+
+%\renewcommand*{\raggedsignature}{\raggedright} 
 
 \usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
 \usepackage{etoolbox}
 \usepackage{ifthen}
 \usepackage{tabularx}
 \usepackage{booktabs}
+\RequirePackage{graphicx}
 
-\setkomavar{fromname}{Max Mustermann}
-\setkomavar{fromaddress}{Musterstr. 34\\12345 Musterstadt}
-\setkomavar{fromphone}{01234/123456}
-\setkomavar{fromemail}{muster@email.de}
-\setkomavar{fromurl}{}
-\setkomavar{signature}{Max Mustermann}
-\setkomavar{frombank}{Musterbank\\BLZ: 12345678\\Kontonummer: 0123456}
+\KOMAoptions{%
+fromalign=left, % fromalign: Absenderadresse zentriert [Standard: linksbündig]
+fromrule=below, % fromrule: below: unter Absender, aftername: Nach Absendernamen, false: keine Linie
+parskip=half, % parskip: false: Absatzeinzug, full= Zeile Abstand zwischen Absätzen, half: halbe Zeile Abstand
+addrfield=true, % addrfield: true: Zieladresse anzeigen, false: Keine Empfängeradresse
+backaddress=true, % backaddress: Im Adressfeld Antwortadresse anzeigen: true / false
+numericaldate=false, % numericaldate: Datum nur aus Zahlen: true/false
+pagenumber=botright, % pagenumber: botcenter: Fuss Mitte, botright: Fuss rechts, botleft: Fusslinks, gleiches auch in Kopfzeile: topcenter,...
+foldmarks=false, % foldmarks: Falzzeichen true/false
+fromphone=true, % fromphone: Absendertelefonnummer, true/false
+fromemail=true, % fromemail: Absenderemailadresse, true/false
+fromurl=true, %URL
+fromlogo=true
+}%
+
+% verwendete Schriften
+% Doku: http://www.ctan.org/tex-archive/macros/latex/required/psnfss/psnfss2e.pdf
+\usepackage{charter}
+\usepackage[scaled=1]{helvet}
+\usepackage{courier}
+
+% besseres Schriftbild
+% Doku: http://www.ctan.org/tex-archive/macros/latex/contrib/microtype/microtype.pdf
+\usepackage{microtype}
+
+\setkomavar{fromname}{Smooh AG}
+\setkomavar{fromaddress}{Technoparkstrasse 2\\8406 Winterthur}
+\setkomavar{fromphone}{+41 52 508 59 57}
+\setkomavar{fromemail}{smooh@smooh.ch}
+\setkomavar{fromurl}{www.smooh.ch}
+\setkomavar{signature}{Oliver Mannhart}
+
+\newkomavar{IBAN}
+\setkomavar{IBAN}{CH72 8134 4000 0098 6620 2}
+
+\newkomavar{MWSTNR}
+\setkomavar{MWSTNR}{CHE-115.318.026 MWST}
+
+\setkomavar{signature}{Smooh AG}
+\setkomavar{frombank}{
+Raiffeisenbank Schaffhausen\\
+\usekomavar{IBAN}
+}
+
+\setkomavar{title}{Rechnung}
+\setkomavar{place}{Winterthur}
+
+\setkomavar{fromlogo}{\includegraphics*[width=7cm]{../examples/logo.pdf}}
+
+\setkomavar{firstfoot}{%
+      \scriptsize{
+        \parbox{\useplength{firstfootwidth}}{ 
+          %\rule{180mm}{0.5pt} 
+          \begin{tabular}{ll}
+    \usekomavar{fromname}\\
+         % \rechtsform\\
+    \usekomavar{fromaddress}\\
+      \end{tabular}\hfill
+          \begin{tabular}{cc}
+    \usekomavar{fromemail}\\
+    \usekomavar{fromphone}\\
+    MWST-Nr: \usekomavar{MWSTNR}\\
+  %  \ustid
+          \end{tabular}\hfill
+          \begin{tabular}{rr}
+    \usekomavar{frombank}\\
+               \end{tabular}
+       }}
+}
+
 
 % Werte: DIN, DINmtext, SN, SNleft, KOMAold.
-\LoadLetterOption{DIN}  
+\LoadLetterOption{SN}  
 
 __GNUCASH-MACROS__
 
@@ -39,7 +103,7 @@ __GNUCASH-PARAMETERS__
 \setkomavar{myref}{}
 \setkomavar{customer}{}
 
-\setkomavar{invoice}{__GNUCASH-INVOICE-ID__}
+%\setkomavar{invoice}{__GNUCASH-INVOICE-ID__}
 \setkomavar{date}{__GNUCASH-POSTING-DATE__}
 
 % Change the titles for your language needs
@@ -63,8 +127,8 @@ __GNUCASH-PARAMETERS__
   
   
 
-\newcommand{\printline}[5]{
-#1\amp#2\amp#3\amp#4\amp#5\\
+\newcommand{\printline}[4]{
+#1\amp#2\amp\hfill#3\amp#4\\
 }
 
 
@@ -72,33 +136,46 @@ __GNUCASH-PARAMETERS__
 \newcommand{\printtab}[1]{%
   \setcounter{i}{0}
   \whiledo {\value{i} < #1}{
-    \printline{\printQuantity{\arabic{i}}}
-              {\gclgetline{Description}{\arabic{i}}}
+    \printline{\gclgetline{Description}{\arabic{i}}}
               {\hfill\gclgetline{UnitPrice}{\arabic{i}}}
-              {\printDiscount{\arabic{i}}}
+              {\printQuantity{\arabic{i}}}
+%              {\printDiscount{\arabic{i}}}
               {\hfill\gclgetline{Subtotal}{\arabic{i}}}
     \stepcounter{i}
   }
 }
 
+\renewcommand{\familydefault}{phv}
 
 \begin{document}
 \begin{letter}{__GNUCASH-CUSTOMER__}
-\opening{}
+\opening{Sehr geehrte Damen und Herren,}
 
-\fontsize{10pt}{1em}\selectfont
-\begin{tabularx}{\linewidth}{lXlll}
-  Menge & Text & Preis (__GNUCASH-CURRENCY__) & Rabatt & Total (__GNUCASH-CURRENCY__) \\\toprule
+hiermit stellen wir Ihnen folgende Dienstleistungen in Rechnung:\\
+\begin{center}
+  {\bfseries \Large __GNUCASH-JOB-NAME__}
+\end{center}
+{\fontsize{11pt}{1.1em}\selectfont
+\begin{tabularx}{\linewidth}{Xlll}
+  \textbf{Aktivität} & \textbf{Preis (__GNUCASH-CURRENCY__)} & \textbf{Anzahl} & \textbf{Total (__GNUCASH-CURRENCY__)} \\\toprule
   \printtab{\csuse{gclinvoicelines}}\\[-2ex]
   \midrule
-  &Taxes&\hfill__GNUCASH-SUBTOTAL__&&\hfill__GNUCASH-TAXES__\\
-  &\multicolumn{3}{l}{Total}&\hfill__GNUCASH-TOTAL__\\
-  \bottomrule
+  Summe &&&\hfill__GNUCASH-SUBTOTAL__\\
+  MWST &&&\hfill__GNUCASH-TAXES__\\
+  %\bottomrule
+  \midrule
+  \midrule
+  \multicolumn{3}{l}{\textbf{Total}}&\hfill\textbf{__GNUCASH-TOTAL__}\\
 \end{tabularx}
+}
 
-__GNUCASH-BILLING-TERMS__
+\enlargethispage{6\baselineskip}    
 
-\closing{}
+Zahlungskonditionen der Rechnung:  zahlbar innert 30 Tagen.\\
+
+Vielen Dank für Ihr Vertrauen. Für Rückfragen zur Rechnung oder der Applikation stehen wir Ihnen gerne zur Verfügung.
+
+\closing{Mit freundlichen Grüssen}
 
 \end{letter}
 \end{document}

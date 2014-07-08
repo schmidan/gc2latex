@@ -44,8 +44,14 @@ sub fillInfos($$) {
             $self->{info}{posted} = str2time( $_->child("invoice:posted")->child("ts:date")->value() );
         } 
 	
+        $self->{jobName} = "Auftrag";
         if ( $_->child("invoice:owner")->child("owner:type")->value() eq "gncJob" ) {
-            $self->{customer} = new Job($xml, $_->child("invoice:owner")->child("owner:id")->value())->getCustomer();
+            
+            my $jobb = new Job($xml, $_->child("invoice:owner")->child("owner:id")->value());
+            #$self->{customer} = new Job($xml, $_->child("invoice:owner")->child("owner:id")->value())->getCustomer();
+            $self->{customer} = $jobb->getCustomer();
+            # $self->{jobName} = new Job($xml, $_->child("invoice:owner")->child("owner:id")->value())->getJobName();
+            $self->{jobName} = $jobb->getJobName();
         } elsif ($_->child("invoice:owner")->child("owner:type")->value() eq "gncCustomer") {
             $self->{customer} = new Customer($xml, $_->child("invoice:owner")->child("owner:id")->value() );
         }
@@ -166,6 +172,11 @@ sub getNotes($) {
 sub getCreditNoteType($) {
     my ($self) = @_;
     return $self->{creditNoteType};
+}
+
+sub getJobName($) {
+    my ($self) = @_;
+    return $self->{jobName};
 }
 
 1;
